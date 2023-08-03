@@ -89,3 +89,47 @@ Ahora, vamos a enlazar la página en el menú, para lo cuál vamos a `Views/Shar
 Como nos damos cuenta, en el atributo `asp-controller` ponemos el nombre del controlador excluyendo la palabra `Controller`, y en el atributo `asp-action` apuntamos a la acción que acabamos de crear.
 
 Para visualizar los cambios, volvemos a lanzar el proyecto, ya sea usando Visual Studio 2022 o la terminal.
+
+## Creando un nuevo controlador
+
+En esta ocasión vamos a crear nuestro propio controlador, y de nuevo podemos apoyarnos en las opciones de Visual Code 2022 para añadir una plantilla de controlador, o podemos usar las extensiones de VSCode para realizar una acción similar. En esta ocasión creamos un controlador llamado `CountryController`. El contenido con el que vamos a partir será el siguiente:
+
+```c#
+using Microsoft.AspNetCore.Mvc;
+
+namespace Seccion01.Controllers
+{
+    public class CountryController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+    }
+}
+```
+
+Creamos una nueva vista llamada `Views/Country/Index.cshtml` (Visual Studio 2022 simplifica la creación y ubicación de las vistas a partir de un controlador, pero en esta ocasión haré el proceso de forma manual).
+
+```cshtml
+@{
+    ViewData["Title"] = "Country";
+}
+
+<h1>Countries</h1>
+```
+
+Ahora, añadimos la nueva vista al menú dentro de `_Layout.cshtml`:
+
+```html
+...
+<nav class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+    <ul class="navbar-nav flex-grow-1">
+        ...
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Country" asp-action="Index">Countries</a>
+        </li>
+    </ul>
+</nav>
+...
+```
