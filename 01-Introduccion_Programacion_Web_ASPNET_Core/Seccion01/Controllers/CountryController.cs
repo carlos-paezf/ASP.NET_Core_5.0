@@ -8,5 +8,25 @@ namespace Seccion01.Controllers
         {
             return View();
         }
+
+        public string Country()
+        {
+            return "Colombia";
+        }
+
+        public char InitialLetter()
+        {
+            return 'C';
+        }
+
+        public double CountrySurfaceKM()
+        {
+            return 1.142;
+        }
+
+        public bool HasFourSeasons()
+        {
+            return false;
+        }
     }
 }

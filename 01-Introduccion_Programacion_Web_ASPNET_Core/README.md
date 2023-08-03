@@ -32,6 +32,12 @@ Vamos a crear un nuevo proyecto usando Visual Studio 2022, para lo cual seguimos
              Content root path: C:\Users\carlo\Documents\Cursos\Curso_ASP.NET_Core_5.0\01-Introduccion_Programacion_Web_ASPNET_Core\Seccion01\
        ```
 
+Cuando usamos la terminal, podemos aprovechar el Hot Reload que viene integrado a partir de .NET Core 6.0, para lo cual ejecutamos el siguiente comando:
+
+```txt
+$: dotnet watch
+```
+
 ## Creando vistas y poniendo opciones al menú
 
 Al crear el proyecto de la forma que lo hicimos en la sección anterior, tendremos un frontend básico que viene integrado a modo de plantilla. Lo que vamos a hacer en estos momentos, es modificar el navbar, el cual se encuentra en `Views/Shared/_Layout.cshtml`.
@@ -133,3 +139,44 @@ Ahora, añadimos la nueva vista al menú dentro de `_Layout.cshtml`:
 </nav>
 ...
 ```
+
+## Pasar información del Controller a la Vista
+
+Vamos compartir información desde el controlador hacia la vista. Para esto, vamos a crear unos métodos dentro del controlador con el fin de retornar algunos tipos de datos diferentes:
+
+```c#
+using Microsoft.AspNetCore.Mvc;
+
+namespace Seccion01.Controllers
+{
+    public class CountryController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public string Country()
+        {
+            return "Colombia";
+        }
+
+        public char InitialLetter()
+        {
+            return 'C';
+        }
+
+        public double CountrySurfaceKM()
+        {
+            return 1.142;
+        }
+
+        public bool HasFourSeasons()
+        {
+            return false;
+        }
+    }
+}
+```
+
+Ahora, cuando vamos al navegador y escribimos el nombre del método después de `https://localhost:7285/Country/`, vamos a observar la data que retornamos en cada uno.
