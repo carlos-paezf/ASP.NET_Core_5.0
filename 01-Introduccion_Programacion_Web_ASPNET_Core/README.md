@@ -31,3 +31,61 @@ Vamos a crear un nuevo proyecto usando Visual Studio 2022, para lo cual seguimos
        info: Microsoft.Hosting.Lifetime[0]
              Content root path: C:\Users\carlo\Documents\Cursos\Curso_ASP.NET_Core_5.0\01-Introduccion_Programacion_Web_ASPNET_Core\Seccion01\
        ```
+
+## Creando vistas y poniendo opciones al menú
+
+Al crear el proyecto de la forma que lo hicimos en la sección anterior, tendremos un frontend básico que viene integrado a modo de plantilla. Lo que vamos a hacer en estos momentos, es modificar el navbar, el cual se encuentra en `Views/Shared/_Layout.cshtml`.
+
+Para crear una nueva vista iremos al archivo `Controllers/HomeController.cs`, en donde encontramos las vistas que implementan la interfaz `IActionResult` y que retornan una `View()`. Como las acciones que inicialmente encontramos, están en la clase `HomeController`, podremos ver sus vistas dentro del directorio `Views/Home`.
+
+Crearemos una nueva vista de ejemplo, para lo cual dentro de la clase `HomeController` definimos una nueva acción:
+
+```c#
+using Microsoft.AspNetCore.Mvc;
+using Seccion01.Models;
+using System.Diagnostics;
+
+namespace Seccion01.Controllers
+{
+    public class HomeController : Controller
+    {
+        ...
+        public IActionResult ExampleView()
+        {
+            return View();
+        }
+        ...
+    }
+}
+```
+
+Si nos apoyamos en Visual Studio 2022, podemos seleccionar `ExampleView()`, pulsar click derecho, seleccionar *Agregar vista...*, elegir *Vista de Razor*, pulsar el botón de *Agregar*, y de ser necesario seleccionar algunas configuraciones extras en la pantalla final.
+
+Si estamos en un editor de código como VSCode, podemos usar las extensiones relacionadas a .NET y generar el archivo mediante un comando. Pero en esta ocasión vamos a crear el archivo de manera manual dentro de `Views/Home` con el nombre `ExampleView.cshtml` y tendrá el siguiente contenido:
+
+```cshtml
+@{
+    ViewData["Title"] = "ExampleView";
+}
+
+<h1>Example View</h1>
+```
+
+Ahora, vamos a enlazar la página en el menú, para lo cuál vamos a `Views/Shared/_Layout.cshtml` y añadimos lo siguiente en el nav:
+
+```html
+...
+<nav class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+    <ul class="navbar-nav flex-grow-1">
+        ...
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ExampleView">Example View</a>
+        </li>
+    </ul>
+</nav>
+...
+```
+
+Como nos damos cuenta, en el atributo `asp-controller` ponemos el nombre del controlador excluyendo la palabra `Controller`, y en el atributo `asp-action` apuntamos a la acción que acabamos de crear.
+
+Para visualizar los cambios, volvemos a lanzar el proyecto, ya sea usando Visual Studio 2022 o la terminal.
