@@ -180,3 +180,39 @@ namespace Seccion01.Controllers
 ```
 
 Ahora, cuando vamos al navegador y escribimos el nombre del método después de `https://localhost:7285/Country/`, vamos a observar la data que retornamos en cada uno.
+
+## Recibir parámetros desde la URL
+
+Para recibir el valor de un parámetro dentro del controlador, solo debemos establecer un argumento dentro de la función que controla el endpoint. Por ejemplo, si queremos que desde el controlador de países se salude a una persona con el nombre que ingreso por parámetro, debemos escribir el siguiente código:
+
+```c#
+...
+namespace Seccion01.Controllers
+{
+    public class CountryController : Controller
+    {
+        ...
+        public string SayWelcome(string name)
+        {
+            return "Hi " + name + ", welcome to Colombia";
+        }
+    }
+}
+```
+
+En la url tendríamos la siguiente estructura de acuerdo al objetivo planteado: `https://localhost:7285/Country/SayWelcome/?name=Carlos`, y como respuesta obtendremos el mensaje `Hi Carlos, welcome to Colombia`. Podemos añadir más argumentos a la función para recibir más parámetros, por ejemplo, para recibir como parámetro adicional el país y usar la siguiente url `https://localhost:7285/Country/SayWelcome/?name=Carlos&country=Colombia`, actualizaríamos el controlador de la siguiente manera y adicionalmente podemos hacer que tenga un valor por defecto:
+
+```c#
+...
+namespace Seccion01.Controllers
+{
+    public class CountryController : Controller
+    {
+        ...
+        public string SayWelcome(string name, string country = "Colombia")
+        {
+            return "Hi " + name + ", welcome to " + country;
+        }
+    }
+}
+```

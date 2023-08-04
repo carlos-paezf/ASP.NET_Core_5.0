@@ -28,5 +28,10 @@ namespace Seccion01.Controllers
         {
             return false;
         }
+
+        public string SayWelcome(string name, string country = "Colombia")
+        {
+            return "Hi " + name + ", welcome to " + country;
+        }
     }
 }
