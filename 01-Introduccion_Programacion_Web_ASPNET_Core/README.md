@@ -259,3 +259,79 @@ namespace Seccion01.Controllers
     }
 }
 ```
+
+## Retornar un Objeto o Lista desde el controlador
+
+Crearemos un nuevo endpoint que nos retorne la información de un embajador que creamos desde el código:
+
+```c#
+...
+namespace Seccion01.Controllers
+{
+    public class CountryController : Controller
+    {
+        ...
+        public AmbassadorClass MeetAmbassador()
+        {
+            return new AmbassadorClass
+            {
+                name = "David Ferrer",
+                country = "República de Colombia"
+            };
+        }
+    }
+}
+```
+
+Cuando ingresamos a la URL `https://localhost:7285/Country/MeetAmbassador` obtendremos el siguiente objeto JSON:
+
+```json
+{
+    "name": "David Ferrer",
+    "country": "República de Colombia"
+}
+```
+
+También podemos retornar un listado de instructores si lo hacemos de la siguiente manera:
+
+```c#
+...
+namespace Seccion01.Controllers
+{
+    public class CountryController : Controller
+    {
+        ...
+        public List<AmbassadorClass> ListAmbassadors()
+        {
+            return new List<AmbassadorClass>
+            {
+                new AmbassadorClass
+                {
+                    name = "David Ferrer",
+                    country = "República de Colombia"
+                },
+                new AmbassadorClass
+                {
+                    name = "Jackie Chan",
+                    country = "China"
+                }
+            };
+        }
+    }
+}
+```
+
+Al momento de llamar a `https://localhost:7285/Country/ListAmbassadors` obtendremos el siguiente arreglo:
+
+```json
+[
+    {
+        "name": "David Ferrer",
+        "country": "República de Colombia"
+    },
+    {
+        "name": "Jackie Chan",
+        "country": "China"
+    }
+]
+```

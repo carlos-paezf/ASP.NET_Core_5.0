@@ -34,5 +34,31 @@ namespace Seccion01.Controllers
         {
             return "Hi " + ambassador.name + ", welcome to " + ambassador.country;
         }
+
+        public AmbassadorClass MeetAmbassador()
+        {
+            return new AmbassadorClass
+            {
+                name = "David Ferrer",
+                country = "República de Colombia"
+            };
+        }
+
+        public List<AmbassadorClass> ListAmbassadors()
+        {
+            return new List<AmbassadorClass>
+            {
+                new AmbassadorClass
+                {
+                    name = "David Ferrer",
+                    country = "República de Colombia"
+                },
+                new AmbassadorClass
+                {
+                    name = "Jackie Chan",
+                    country = "China"
+                }
+            };
+        }
     }
 }
