@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Seccion01.Classes;
 
 namespace Seccion01.Controllers
 {
@@ -29,9 +30,9 @@ namespace Seccion01.Controllers
             return false;
         }
 
-        public string SayWelcome(string name, string country = "Colombia")
+        public string SayWelcome(AmbassadorClass ambassador)
         {
-            return "Hi " + name + ", welcome to " + country;
+            return "Hi " + ambassador.name + ", welcome to " + ambassador.country;
         }
     }
 }

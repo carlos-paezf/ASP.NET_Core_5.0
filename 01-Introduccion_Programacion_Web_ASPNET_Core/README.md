@@ -216,3 +216,46 @@ namespace Seccion01.Controllers
     }
 }
 ```
+
+## Pasar como parámetro una clase
+
+¿Que pasaría si tuviéramos que recibir múltiples parámetros desde la URL? Nuestro código se vería muy sucio y tosco si lo trabajamos como lo venimos haciendo. Para evitar esto podemos crear una clase cuyos atributos sean los parámetros que esperamos.
+
+Vamos a crear una nueva carpeta dentro del paquete del proyecto que estamos desarrollando, es decir, nuestro nuevo folder debe estar al nivel de los controladores, modelos y otros. El nuevo directorio se llamará `Classes` y tendrá un archivo llamado `AmbassadorClass.cs` (de nuevo, podemos apoyarnos en las herramientas de Visual Studio 2022 o en las extensiones que tenemos en VSCode, con el fin de agilizar el proceso de creación de clases).
+
+La nueva clase tendrá los siguientes atributos, los cuales podemos inicializar para que tengan un valor en caso de que el usuario no lo provea:
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Seccion01.Classes
+{
+    public class AmbassadorClass
+    {
+        public string name { get; set; }
+        public string country { get; set; } = "Colombia"; 
+    }
+}
+```
+
+Para hacer uso de nuestra clase dentro del controlador de países, debemos realizar la importación y llamar un parámetros del tipo embajador dentro de la acción, para luego llamar sus atributos:
+
+```c#
+...
+using Seccion01.Classes;
+
+namespace Seccion01.Controllers
+{
+    public class CountryController : Controller
+    {
+        ...
+        public string SayWelcome(AmbassadorClass ambassador)
+        {
+            return "Hi " + ambassador.name + ", welcome to " + ambassador.country;
+        }
+    }
+}
+```
