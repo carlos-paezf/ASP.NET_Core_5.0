@@ -363,7 +363,7 @@ Cuando vamos a la url `https://localhost:7285/country` tendremos un título que 
 
 <h1>@message</h1>
 
-<h3>Algunos países de Suramérica</h3>
+<h3>Algunos países de Sudamérica</h3>
 
 <ul>
     @foreach(string country in someCountries) {
@@ -373,3 +373,51 @@ Cuando vamos a la url `https://localhost:7285/country` tendremos un título que 
 ```
 
 Todo lo que hemos hecho antes se conoce como ***Sintaxis Razor***.
+
+## Indicar página por defecto al iniciar la aplicación
+
+Vamos a crear una nueva lista para el controlador de países, por lo que añadimos el siguiente código dentro de `Controllers/CountryController.cs`:
+
+```c#
+...
+namespace Seccion01.Controllers
+{
+    public class CountryController : Controller
+    {
+        ...
+        public IActionResult ListCountries()
+        {
+            return View();
+        }
+        ...
+    }
+}
+```
+
+Podemos apoyarnos en las herramientas de Visual Studio 2022 o las extensiones de VSCode para crear la vista `Views/Country/ListCountries.cshtml`, pero inicialmente debemos tener el siguiente código:
+
+```cshtml
+@{
+    ViewData["Title"] = "ListCountries";
+
+    string[] someCountries = { "Colombia", "Ecuador", "Pánama", "Vezuela"};
+}
+
+<h1>Listado de Países</h1>
+
+<h3>Algunos países de Sudamérica</h3>
+
+<ul>
+    @foreach(string country in someCountries) {
+        <li>@country.ToUpper()</li>
+    }
+</ul>
+```
+
+Dentro del archivo `Startup.cs` para Core 5 o en `Program.cs` en Core 7, podemos modificar a nuestro gusto el endpoint que se debe mostrar por defecto al arrancar la aplicación, por ejemplo, queremos que inicialmente se muestre como vista principal el archivo que acabamos de crear, para ello modificamos lo siguiente:
+
+```c#
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Country}/{action=ListCountries}/{id?}");
+```

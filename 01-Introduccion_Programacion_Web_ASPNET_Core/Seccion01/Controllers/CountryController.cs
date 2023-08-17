@@ -10,6 +10,11 @@ namespace Seccion01.Controllers
             return View();
         }
 
+        public IActionResult ListCountries()
+        {
+            return View();
+        }
+
         public string Country()
         {
             return "Colombia";
