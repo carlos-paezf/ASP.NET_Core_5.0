@@ -421,3 +421,51 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Country}/{action=ListCountries}/{id?}");
 ```
+
+## Renderizar una lista desde una vista
+
+Podemos renderizar una lista que contiene un tipado dentro de una vista, y para ello hacemos uso de la sintaxis Razor junto con conocimientos de C#, en este caso, la importación de la clase `AmbassadorClass`. Por ejemplo, queremos mostrar en la vista un listado de embajadores:
+
+```cshtml
+@using Seccion01.Classes;
+
+@{
+    ViewData["Title"] = "ListCountries";
+    
+    List<AmbassadorClass> ambassadors = new List<AmbassadorClass>
+    {
+        new AmbassadorClass
+        {
+            name = "David Ferrer",
+            country = "República de Colombia"
+        },
+        new AmbassadorClass
+        {
+            name = "Jackie Chan",
+            country = "China"
+        }
+    };
+}
+
+<h1>Listado de Países</h1>
+...
+<h3>Algunos embajadores:</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>País</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach(AmbassadorClass ambassador in ambassadors) {
+            <tr>
+                <td>@ambassador.name</td>
+                <td>@ambassador.country</td>
+            </tr>
+        }
+    </tbody>
+</table>
+```
