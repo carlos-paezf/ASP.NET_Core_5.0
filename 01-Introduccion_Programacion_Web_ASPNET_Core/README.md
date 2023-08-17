@@ -335,3 +335,41 @@ Al momento de llamar a `https://localhost:7285/Country/ListAmbassadors` obtendre
     }
 ]
 ```
+
+## Introducción a la Sintaxis Razor
+
+En estos momentos vamos a trabajar con la vista `Views/Country/Index.cshtml`. Podemos escribir código C# dentro del template, con el objetivo de posteriormente representarlo en el HTML, por ejemplo:
+
+```cshtml
+@{
+    ViewData["Title"] = "Country";
+
+    string message = "Colombia: El país más hermoso del mundo";
+}
+
+<h1>@message</h1>
+```
+
+Cuando vamos a la url `https://localhost:7285/country` tendremos un título que muestra el valor de variable que definimos en el bloque de C# dentro de la vista. Otro ejemplo es iterar los valores de una lista y mostrarlos en el template:
+
+```cshtml
+@{
+    ViewData["Title"] = "Country";
+
+    string message = "Colombia: El país más hermoso del mundo";
+
+    string[] someCountries = { "Colombia", "Ecuador", "Pánama", "Vezuela"};
+}
+
+<h1>@message</h1>
+
+<h3>Algunos países de Suramérica</h3>
+
+<ul>
+    @foreach(string country in someCountries) {
+        <li>@country.ToUpper()</li>
+    }
+</ul>
+```
+
+Todo lo que hemos hecho antes se conoce como ***Sintaxis Razor***.

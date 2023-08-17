@@ -1,6 +1,18 @@
 @{
     ViewData["Title"] = "Country";
+
+    string message = "Colombia: El país más hermoso del mundo";
+
+    string[] someCountries = { "Colombia", "Ecuador", "Pánama", "Vezuela"};
 }
 
-<h1>Countries</h1>
+<h1>@message</h1>
+
+<h3>Algunos países de Suramérica</h3>
+
+<ul>
+    @foreach(string country in someCountries) {
+        <li>@country.ToUpper()</li>
+    }
+</ul>
 
