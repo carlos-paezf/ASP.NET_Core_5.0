@@ -1,4 +1,4 @@
-namespace Seccion01.Models
+namespace Section01.Models
 {
     public class ErrorViewModel
     {

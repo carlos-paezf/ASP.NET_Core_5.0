@@ -29,7 +29,7 @@ Vamos a crear un nuevo proyecto usando Visual Studio 2022, para lo cual seguimos
        info: Microsoft.Hosting.Lifetime[0]
              Hosting environment: Development
        info: Microsoft.Hosting.Lifetime[0]
-             Content root path: C:\Users\carlo\Documents\Cursos\Curso_ASP.NET_Core_5.0\01-Introduccion_Programacion_Web_ASPNET_Core\Seccion01\
+             Content root path: C:\Users\carlo\Documents\Cursos\Curso_ASP.NET_Core_5.0\01-Introduccion_Programacion_Web_ASPNET_Core\Section01\
        ```
 
 Cuando usamos la terminal, podemos aprovechar el Hot Reload que viene integrado a partir de .NET Core 6.0, para lo cual ejecutamos el siguiente comando:
@@ -48,10 +48,10 @@ Crearemos una nueva vista de ejemplo, para lo cual dentro de la clase `HomeContr
 
 ```c#
 using Microsoft.AspNetCore.Mvc;
-using Seccion01.Models;
+using Section01.Models;
 using System.Diagnostics;
 
-namespace Seccion01.Controllers
+namespace Section01.Controllers
 {
     public class HomeController : Controller
     {
@@ -103,7 +103,7 @@ En esta ocasión vamos a crear nuestro propio controlador, y de nuevo podemos ap
 ```c#
 using Microsoft.AspNetCore.Mvc;
 
-namespace Seccion01.Controllers
+namespace Section01.Controllers
 {
     public class CountryController : Controller
     {
@@ -147,7 +147,7 @@ Vamos compartir información desde el controlador hacia la vista. Para esto, vam
 ```c#
 using Microsoft.AspNetCore.Mvc;
 
-namespace Seccion01.Controllers
+namespace Section01.Controllers
 {
     public class CountryController : Controller
     {
@@ -187,7 +187,7 @@ Para recibir el valor de un parámetro dentro del controlador, solo debemos esta
 
 ```c#
 ...
-namespace Seccion01.Controllers
+namespace Section01.Controllers
 {
     public class CountryController : Controller
     {
@@ -204,7 +204,7 @@ En la url tendríamos la siguiente estructura de acuerdo al objetivo planteado: 
 
 ```c#
 ...
-namespace Seccion01.Controllers
+namespace Section01.Controllers
 {
     public class CountryController : Controller
     {
@@ -231,7 +231,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Seccion01.Classes
+namespace Section01.Classes
 {
     public class AmbassadorClass
     {
@@ -245,9 +245,9 @@ Para hacer uso de nuestra clase dentro del controlador de países, debemos reali
 
 ```c#
 ...
-using Seccion01.Classes;
+using Section01.Classes;
 
-namespace Seccion01.Controllers
+namespace Section01.Controllers
 {
     public class CountryController : Controller
     {
@@ -266,7 +266,7 @@ Crearemos un nuevo endpoint que nos retorne la información de un embajador que 
 
 ```c#
 ...
-namespace Seccion01.Controllers
+namespace Section01.Controllers
 {
     public class CountryController : Controller
     {
@@ -296,7 +296,7 @@ También podemos retornar un listado de instructores si lo hacemos de la siguien
 
 ```c#
 ...
-namespace Seccion01.Controllers
+namespace Section01.Controllers
 {
     public class CountryController : Controller
     {
@@ -380,7 +380,7 @@ Vamos a crear una nueva lista para el controlador de países, por lo que añadim
 
 ```c#
 ...
-namespace Seccion01.Controllers
+namespace Section01.Controllers
 {
     public class CountryController : Controller
     {
@@ -427,7 +427,7 @@ app.MapControllerRoute(
 Podemos renderizar una lista que contiene un tipado dentro de una vista, y para ello hacemos uso de la sintaxis Razor junto con conocimientos de C#, en este caso, la importación de la clase `AmbassadorClass`. Por ejemplo, queremos mostrar en la vista un listado de embajadores:
 
 ```cshtml
-@using Seccion01.Classes;
+@using Section01.Classes;
 
 @{
     ViewData["Title"] = "ListCountries";
@@ -436,13 +436,13 @@ Podemos renderizar una lista que contiene un tipado dentro de una vista, y para 
     {
         new AmbassadorClass
         {
-            name = "David Ferrer",
-            country = "República de Colombia"
+            Name = "David Ferrer",
+            Country = "República de Colombia"
         },
         new AmbassadorClass
         {
-            name = "Jackie Chan",
-            country = "China"
+            Name = "Jackie Chan",
+            Country = "China"
         }
     };
 }

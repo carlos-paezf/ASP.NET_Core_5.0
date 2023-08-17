@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Seccion01.Classes;
+using Section01.Classes;
 
-namespace Seccion01.Controllers
+namespace Section01.Controllers
 {
     public class CountryController : Controller
     {
@@ -37,15 +37,15 @@ namespace Seccion01.Controllers
 
         public string SayWelcome(AmbassadorClass ambassador)
         {
-            return "Hi " + ambassador.name + ", welcome to " + ambassador.country;
+            return "Hi " + ambassador.Name + ", welcome to " + ambassador.Country;
         }
 
         public AmbassadorClass MeetAmbassador()
         {
             return new AmbassadorClass
             {
-                name = "David Ferrer",
-                country = "República de Colombia"
+                Name = "David Ferrer",
+                Country = "República de Colombia"
             };
         }
 
@@ -55,13 +55,13 @@ namespace Seccion01.Controllers
             {
                 new AmbassadorClass
                 {
-                    name = "David Ferrer",
-                    country = "República de Colombia"
+                    Name = "David Ferrer",
+                    Country = "República de Colombia"
                 },
                 new AmbassadorClass
                 {
-                    name = "Jackie Chan",
-                    country = "China"
+                    Name = "Jackie Chan",
+                    Country = "China"
                 }
             };
         }
