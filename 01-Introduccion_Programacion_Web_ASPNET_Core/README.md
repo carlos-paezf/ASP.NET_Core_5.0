@@ -469,3 +469,98 @@ Podemos renderizar una lista que contiene un tipado dentro de una vista, y para 
     </tbody>
 </table>
 ```
+
+## Renderizar una lista desde un controlador
+
+En la lección pasada creamos la lista dentro de la vista usando la sintaxis Razor, pero en esta oportunidad vamos a usar la lista que tenemos creada en un controlador.
+
+Vamos a crear un nuevo controlador y una nueva vista para los embajadores, para lo cuál nos podemos apoyar en las herramientas de Visual Studio 2022 o VSCode, aunque siempre tendremos la opción de hacerlo de manera manual.
+
+El nuevo controlador se verá de la siguiente manera:
+
+```c#
+using Microsoft.AspNetCore.Mvc;
+using Section01.Classes;
+
+namespace Section01.Controllers
+{
+    public class AmbassadorController : Controller
+    {
+        public IActionResult Index()
+        {
+            List<AmbassadorClass> ambassadors = new()
+            {
+                new AmbassadorClass
+                {
+                    Name = "David Ferrer",
+                    Country = "República de Colombia"
+                },
+                new AmbassadorClass
+                {
+                    Name = "Jackie Chan",
+                    Country = "China"
+                }
+            };
+
+            return View(ambassadors);
+        }
+    }
+}
+```
+
+La vista que estamos retornando se ubicará en `Views/Ambassador/Index.cshtml` y en la cual inicialmente importamos las clases personalizadas de nuestro proyecto, y posteriormente declaramos un modelo que se ajusta a la interfaz `IEnumerable` asumiendo que el genérico es nuestra clase de embajadores:
+
+```cshtml
+@using Section01.Classes; 
+@model IEnumerable<AmbassadorClass>;
+
+@{
+    ViewData["Title"] = "Ambassador";
+}
+
+<h1>Embajadores</h1>
+```
+
+Con el modelo declarado poder usar la lista que estamos enviando por parámetro en `View(ambassadors)` desde el controlador, y la cual podemos renderizar dentro de la vista:
+
+```cshtml
+@using Section01.Classes; 
+@model IEnumerable<AmbassadorClass>;
+
+@{
+    ViewData["Title"] = "Ambassador";
+}
+
+<h1>Embajadores</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>País</th>
+    </tr>
+  </thead>
+
+  <tbody>
+        @foreach (AmbassadorClass ambassador in Model)
+        {
+        <tr>
+          <td>@ambassador.Name</td>
+          <td>@ambassador.Country</td>
+        </tr>
+        }
+  </tbody>
+</table>
+```
+
+Para simplificarnos la vida un poco, ubicaremos el enlace al nuevo controlador dentro de los links del menú superior que están definidos en `Shared/_Layout.cshtml`:
+
+```cshtml
+...
+<li class="nav-item">
+    <a class="nav-link text-dark" asp-area="" asp-controller="Ambassador" asp-action="Index">
+        Ambassadors
+    </a>
+</li>
+...
+```

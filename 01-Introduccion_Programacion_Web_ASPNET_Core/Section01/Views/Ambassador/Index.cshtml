@@ -1,0 +1,27 @@
+@using Section01.Classes; 
+@model IEnumerable<AmbassadorClass>;
+
+@{
+    ViewData["Title"] = "Ambassador";
+}
+
+<h1>Embajadores</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>País</th>
+    </tr>
+  </thead>
+
+  <tbody>
+        @foreach (AmbassadorClass ambassador in Model)
+        {
+        <tr>
+          <td>@ambassador.Name</td>
+          <td>@ambassador.Country</td>
+        </tr>
+        }
+  </tbody>
+</table>
