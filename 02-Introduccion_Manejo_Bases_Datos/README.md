@@ -68,3 +68,9 @@ $: /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P P@ssw0rd
 ```
 
 Mediante Microsoft SQL Server Management Studio, podemos hacer la conexión al container usando como server name `localhost, 1433` y la autenticación de SQL Server Authentication con el usuario `SA` y la contraseña definida al crear el contenedor. En caso de que aparezca el error `MSSQLSERVER_18456`, se puede intentar ingresar con la autenticación de windows.
+
+## Restaurar una base de datos
+
+Para esta sección vamos a usar una base de datos existente, por lo cual tendremos que recuperar el archivo [BDHospital.bak](./BDHospital.bak) dentro del servidor de SQL Server. Dentro del MSSMS seleccionamos el servidor, en la carpeta de `Databases` pulsamos click izquierdo y seleccionamos la opción ***Restore Database***. En la nueva ventana seleccionamos como fuente `Device` y buscamos el archivo arriba mencionado.
+
+Cuando la base de datos ha sido restaura, podremos manipularla o navegar a través de ella. En la siguiente lección nos conectaremos desde .NET a la base de datos restaurada.
