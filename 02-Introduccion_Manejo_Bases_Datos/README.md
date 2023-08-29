@@ -23,3 +23,48 @@ Vamos a descargar SQL Server Express 2022 desde el siguiente enlace: [SQL Server
 17. Terminada la instalación del SSMS, procedemos a ejecutarla.
 
 Por defecto, el server que nos muestra es el que definimos en el paso 10 de la anterior lista. Para la autenticación podemos usar el usuario windows, o usar el usuario `sa` con la contraseña definida en el paso 12.
+
+## Microsoft SQL Server en Docker
+
+Una opción viable para hacer uso de bases de datos con SQL Server, es mediante un contenedor de Docker con una imagen de SQL Server. Para ello primero debemos descargar la imagen de Docker Hub [Microsoft SQL Server - Ubuntu based images](https://hub.docker.com/_/microsoft-mssql-server):
+
+```txt
+$: docker pull mcr.microsoft.com/mssql/server
+```
+
+Podemos verificar la versión de la imagen instalada usando el comando:
+
+```txt
+$: docker images
+```
+
+Creamos el contenedor con la imagen descargada de la siguiente manera ([Inicio rápido: Ejecución de imágenes de contenedor de SQL Server para Linux con Docker](https://learn.microsoft.com/es-mx/sql/linux/quickstart-install-connect-docker?view=sql-server-ver16&pivots=cs1-bash)):
+
+```txt
+$: docker run -d -p 1433:1433 \
+    --name SQLServer \
+    --hostname SQLServer \
+    -e SA_PASSWORD=P@ssw0rd \
+    -e ACCEPT_EULA=Y \
+    mcr.microsoft.com/mssql/server
+```
+
+Podemos comprobar que el contenedor está corriendo usando el comando:
+
+```txt
+$: docker container ls -a
+```
+
+Si queremos interactuar con la terminal del contenedor podemos usar el comando:
+
+```txt
+$: docker exec -it SQLServer bash
+```
+
+Desde la consola interactiva podemos conectarnos al servidor usando el siguiente comando:
+
+```txt
+$: /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P P@ssw0rd
+```
+
+Mediante Microsoft SQL Server Management Studio, podemos hacer la conexión al container usando como server name `localhost, 1433` y la autenticación de SQL Server Authentication con el usuario `SA` y la contraseña definida al crear el contenedor. En caso de que aparezca el error `MSSQLSERVER_18456`, se puede intentar ingresar con la autenticación de windows.
