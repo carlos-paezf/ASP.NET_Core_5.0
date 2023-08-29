@@ -74,3 +74,48 @@ Mediante Microsoft SQL Server Management Studio, podemos hacer la conexión al c
 Para esta sección vamos a usar una base de datos existente, por lo cual tendremos que recuperar el archivo [BDHospital.bak](./BDHospital.bak) dentro del servidor de SQL Server. Dentro del MSSMS seleccionamos el servidor, en la carpeta de `Databases` pulsamos click izquierdo y seleccionamos la opción ***Restore Database***. En la nueva ventana seleccionamos como fuente `Device` y buscamos el archivo arriba mencionado.
 
 Cuando la base de datos ha sido restaura, podremos manipularla o navegar a través de ella. En la siguiente lección nos conectaremos desde .NET a la base de datos restaurada.
+
+## Entity Framework para conectar a una base de datos
+
+En esta lección usaremos la consola para mapear las entidades de la base de datos dentro de nuestro proyecto. Lo primero será la creación de nuevo proyecto para esta sección, y en esta ocasión lo crearemos con el comando:
+
+```txt
+$: dotnet new mvc --language "C#" --name "Section02"
+```
+
+Lo siguiente es la instalación del proveedor de Entity Framework con el siguiente comando:
+
+```txt
+$: dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+```
+
+Posteriormente obtenemos las herramientas del Entity Framework mediante el siguiente comando de la CLI de .NET:
+
+```txt
+$: dotnet tool install --global dotnet-ef
+
+$: dotnet add package Microsoft.EntityFrameworkCore.Tools
+
+$: dotnet add package Microsoft.EntityFrameworkCore.Design
+```
+
+Para el mapeo o Scaffold necesitamos la cadena de conexión a la base de datos, y la podemos guardar en 2 lugares: En `appsettings.json` (no es muy recomendado, pero la usaremos en esta oportunidad), o en los secretos de usuario ([Scaffolding (utilización de técnicas de ingeniería inversa)](https://learn.microsoft.com/es-es/ef/core/managing-schemas/scaffolding/?tabs=dotnet-core-cli)).
+
+Dentro del archivo `appsettings.json` vamos a añadir una nueva pareja de clave valor con la cadena de conexión:
+
+```json
+{
+    ...,
+    "ConnectionStrings": {
+        "DBHospital": "Data Source=localhost, 1433;Initial Catalog=BDHospital;Integrated Security=True;TrustServerCertificate=True"
+    }
+}
+```
+
+En el `Data Source` definimos el servidor, en `Initial Catalog` definimos la base de datos a la cual nos conectamos, en `Integrated Security` definimos que usaremos la autenticación combinada de Windows y SQL Server, y en `TrustServerCertificate` generamos un certificado de conexión para que el contenedor de docker permita la conexión a nuestro server.
+
+Posteriormente realizamos el mapeo con el siguiente comando:
+
+```txt
+$: dotnet ef dbcontext scaffold "Name=ConnectionStrings:DBHospital" Microsoft.EntityFrameworkCore.SqlServer -o Models
+```
