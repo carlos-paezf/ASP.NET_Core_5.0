@@ -119,3 +119,55 @@ Posteriormente realizamos el mapeo con el siguiente comando:
 ```txt
 $: dotnet ef dbcontext scaffold "Name=ConnectionStrings:DBHospital" Microsoft.EntityFrameworkCore.SqlServer -o Models
 ```
+
+## Creando listado de especialidades de la DB
+
+Crearemos un listado con la tabla `Especialidad`, por lo que primero crearemos un controlador dedicado a tal modelo llamado `Controllers/EspecialidadController.cs`. También debemos crear la vista `Views/Especialidad/Index.cshtml` y una clase `Classes/EspecialidadClass.cs` para estandarizar la data y tendrá la siguiente información:
+
+```c#
+...
+namespace Section02.Classes
+{
+    public class EspecialidadClass
+    {
+        public int iidespecialidad { get; set; }
+        public string nombre { get; set; }
+        public string descripcion { get; set; }
+    }
+}
+```
+
+En el controlador configuraremos la acción para usar el contexto de la base de datos y realizar una consulta que nos traiga todas las especialidades activas:
+
+```c#
+using Microsoft.AspNetCore.Mvc;
+using Section02.Classes;
+using Section02.Models;
+
+namespace Section02.Controllers
+{
+    public class EspecialidadController : Controller
+    {
+        public IActionResult Index()
+        {
+            List<EspecialidadClass> especialidadList = new List<EspecialidadClass>();
+
+            using (BDHospitalContext db = new BDHospitalContext())
+            {
+                especialidadList = (
+                    from especialidad in db.Especialidades
+                    where especialidad.Bhabilitado == 1
+                    select new EspecialidadClass
+                    {
+                        iidespecialidad = especialidad.Iidespecialidad,
+                        nombre = especialidad.Nombre,
+                        descripcion = especialidad.Descripcion
+                    }
+                ).ToList();
+            }
+
+            return View(especialidadList);
+        }
+    }
+}
+```
