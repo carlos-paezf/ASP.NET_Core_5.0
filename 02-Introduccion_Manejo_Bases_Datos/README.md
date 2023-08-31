@@ -107,7 +107,7 @@ Dentro del archivo `appsettings.json` vamos a añadir una nueva pareja de clave 
 {
     ...,
     "ConnectionStrings": {
-        "DBHospital": "Data Source=localhost, 1433;Initial Catalog=BDHospital;Integrated Security=True;TrustServerCertificate=True"
+        "BDHospital": "Data Source=localhost, 1433;Initial Catalog=BDHospital;Integrated Security=True;TrustServerCertificate=True"
     }
 }
 ```
@@ -117,7 +117,7 @@ En el `Data Source` definimos el servidor, en `Initial Catalog` definimos la bas
 Posteriormente realizamos el mapeo con el siguiente comando:
 
 ```txt
-$: dotnet ef dbcontext scaffold "Name=ConnectionStrings:DBHospital" Microsoft.EntityFrameworkCore.SqlServer -o Models
+$: dotnet ef dbcontext scaffold "Name=ConnectionStrings:BDHospital" Microsoft.EntityFrameworkCore.SqlServer -o Models
 ```
 
 ## Creando listado de especialidades de la DB
@@ -170,4 +170,50 @@ namespace Section02.Controllers
         }
     }
 }
+```
+
+## Renderizar listado de especialidades
+
+En la vista que creamos para renderizar la información de las especialidades, vamos a estructurar una tabla de la siguiente manera:
+
+```cshtml
+@using Section02.Classes; 
+@model IEnumerable<EspecialidadClass>;
+
+@{
+    ViewData["Title"] = "Especialidad";
+}
+
+<h1>Especialidades</h1>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>Id Especialidad</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (EspecialidadClass e in Model) 
+        {
+            <tr>
+                <td>@e.iidespecialidad</td>
+                <td>@e.nombre</td>
+                <td>@e.descripcion</td>
+            </tr>
+        }
+    </tbody>
+</table>
+```
+
+Además, vamos a configurar que por defecto la aplicación ingrese al controlador de especialidades, y esto lo hacemos desde `Program.cs`:
+
+```c#
+...
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Especialidad}/{action=Index}/{id?}");
+...
 ```

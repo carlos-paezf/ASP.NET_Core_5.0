@@ -1,5 +1,29 @@
+@using Section02.Classes; 
+@model IEnumerable<EspecialidadClass>;
+
 @{
     ViewData["Title"] = "Especialidad";
 }
 
-<h1>New Page</h1>
+<h1>Especialidades</h1>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>Id Especialidad</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (EspecialidadClass e in Model) 
+        {
+            <tr>
+                <td>@e.iidespecialidad</td>
+                <td>@e.nombre</td>
+                <td>@e.descripcion</td>
+            </tr>
+        }
+    </tbody>
+</table>

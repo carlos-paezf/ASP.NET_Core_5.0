@@ -1,3 +1,5 @@
+using System;
+
 namespace Section02.Classes
 {
     public class EspecialidadClass
