@@ -120,6 +120,25 @@ Posteriormente realizamos el mapeo con el siguiente comando:
 $: dotnet ef dbcontext scaffold "Name=ConnectionStrings:BDHospital" Microsoft.EntityFrameworkCore.SqlServer -o Models
 ```
 
+> Nota: Durante la realización del curso se presentaron inconvenientes en cuanto a la cadena de conexión, por lo tanto cambié el comando al siguiente:
+>
+> ```txt
+> $: dotnet ef dbcontext scaffold "Data Source=localhost, 1433;Initial Catalog=BDHospital;Integrated Security=True;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -o Models
+> ```
+>
+> Lo anterior hace que el archivo de contexto (`BDHospitalContext`) tenga la siguiente configuración:
+>
+> ```c#
+> ...
+> public partial class BDHospitalContext : DbContext
+> {
+>     ...
+>     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+> #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+>         => optionsBuilder.UseSqlServer("Data Source=localhost, 1433;Initial Catalog=BDHospital;Integrated Security=True;TrustServerCertificate=True");
+> }
+> ```
+
 ## Creando listado de especialidades de la DB
 
 Crearemos un listado con la tabla `Especialidad`, por lo que primero crearemos un controlador dedicado a tal modelo llamado `Controllers/EspecialidadController.cs`. También debemos crear la vista `Views/Especialidad/Index.cshtml` y una clase `Classes/EspecialidadClass.cs` para estandarizar la data y tendrá la siguiente información:
