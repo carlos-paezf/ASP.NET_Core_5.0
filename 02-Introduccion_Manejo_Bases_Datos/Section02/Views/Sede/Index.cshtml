@@ -1,0 +1,30 @@
+@using Section02.Classes;
+@model IEnumerable<SedeClass>
+
+@{
+    ViewData["Title"] = "Sedes";
+}
+
+<h1>Listado de Sedes</h1>
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.iidSede)</th>
+            <th>@Html.DisplayNameFor(model => model.nombreSede)</th>
+            <th>@Html.DisplayNameFor(model => model.direccion)</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (SedeClass s in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => s.iidSede)</td>
+                <td>@Html.DisplayFor(model => s.nombreSede)</td>
+                <td>@Html.DisplayFor(model => s.direccion)</td>
+            </tr>
+        }
+    </tbody>
+</table>

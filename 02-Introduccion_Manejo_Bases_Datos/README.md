@@ -416,3 +416,105 @@ Luego, en la vista debemos realizar el siguiente llamado:
     ...
 </table>
 ```
+
+## Uso del Scaffolding List
+
+Vamos a crear una nueva clase llamada `SedeClass.cs` y en ella tendremos la siguiente estructura:
+
+```c#
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace Section02.Classes
+{
+    public class SedeClass
+    {
+        [Display(Name = "Id Sede")]
+        public int iidSede { get; set; }
+
+        [Display(Name = "Nombre de la Sede")]
+        public string nombreSede { get; set; }
+
+        [Display(Name = "Dirección")]
+        public string direccion { get; set; }
+    }
+}
+```
+
+En seguida, creamos el controlador para las sedes y creamos un listado como los anteriores y lo retornamos a la vista:
+
+```c#
+using System;
+using Microsoft.AspNetCore.Mvc;
+using Section02.Classes;
+using Section02.Models;
+
+namespace Section02.Controllers
+{
+    public class SedeController : Controller
+    {
+        public IActionResult Index()
+        {
+            List<SedeClass> sedesList = new List<SedeClass>();
+
+            using (BDHospitalContext db = new BDHospitalContext())
+            {
+                sedesList = (
+                    from sede in db.Sedes
+                    where sede.Bhabilitado == 1
+                    select new SedeClass
+                    {
+                        iidSede = sede.Iidsede,
+                        nombreSede = sede.Nombre,
+                        direccion = sede.Direccion
+                    }
+                ).ToList();
+            }
+
+            return View(sedesList);
+        }
+    }
+```
+
+La vista `Views/Sede/Index.cshtml` la vamos a generar un Visual Studio Code 2022, con el fin de que no sea un template vació, sino que sea un template `list`. Lo anterior nos genera el código que hemos venido trabajando en las últimas vistas, pero con algunas pequeñas modificaciones, se ve algo cómo lo siguiente (He borrado luego las acciones CRUD que se generan dentro del template, y cambie algunos nombres):
+
+```cshtml
+@model IEnumerable<Section02.Classes.SedeClass>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.iidSede)</th>
+            <th>@Html.DisplayNameFor(model => model.nombreSede)</th>
+            <th>@Html.DisplayNameFor(model => model.direccion)</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => item.iidSede)</td>
+                <td>@Html.DisplayFor(model => item.nombreSede)</td>
+                <td>@Html.DisplayFor(model => item.direccion)</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+```
