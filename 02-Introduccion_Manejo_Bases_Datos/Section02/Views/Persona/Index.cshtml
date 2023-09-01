@@ -1,5 +1,32 @@
+@using Section02.Classes;
+@model IEnumerable<PersonaClass>
+
 @{
     ViewData["Title"] = "Personas";
 }
 
 <h1>Listado de Personas</h1>
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>Id Persona</th>
+            <th>Nombre Completo</th>
+            <th>Email</th>
+            <th>Sexo</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (PersonaClass p in Model)
+        {
+            <tr>
+                <td>@p.iidPersona</td>
+                <td>@p.nombreCompleto</td>
+                <td>@p.email</td>
+                <td>@p.nombreSexo</td>
+            </tr>
+        }
+    </tbody>
+</table>

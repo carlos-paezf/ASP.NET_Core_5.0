@@ -332,3 +332,42 @@ Lo siguiente es crear la vista para el controlador, pero en la siguiente secció
 </ul>
 ...
 ```
+
+## Renderizar listado de JOIN
+
+Dentro de la vista que creamos para el controlador de personas vamos a realizar la siguiente configuración para listar los resultados:
+
+```cshtml
+@using Section02.Classes;
+@model IEnumerable<PersonaClass>
+
+@{
+    ViewData["Title"] = "Personas";
+}
+
+<h1>Listado de Personas</h1>
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>Id Persona</th>
+            <th>Nombre Completo</th>
+            <th>Email</th>
+            <th>Sexo</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (PersonaClass p in Model)
+        {
+            <tr>
+                <td>@p.iidPersona</td>
+                <td>@p.nombreCompleto</td>
+                <td>@p.email</td>
+                <td>@p.nombreSexo</td>
+            </tr>
+        }
+    </tbody>
+</table>
+```
