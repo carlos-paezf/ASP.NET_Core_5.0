@@ -236,3 +236,99 @@ app.MapControllerRoute(
     pattern: "{controller=Especialidad}/{action=Index}/{id?}");
 ...
 ```
+
+## Uso de JOIN en ASP.NET
+
+Crearemos un nuevo controller llamado `PersonaController.cs`, dentro del cual creamos un arreglo en la acción `Index` para traer a las personas y consultar el valor de su sexo, el cual se encuentra definido en otra taba de la DB.
+
+Antes, vamos a crear una clase para el tipado de las personas, y esta clase llamada `Classes/PersonaClass.cs` tendrá la siguiente información:
+
+```c#
+using System;
+
+namespace Section02.Classes
+{
+    public class PersonaClass
+    {
+        public int iidPersona { get; set; }
+        public string nombreCompleto { get; set; }
+        public string email { get; set; }
+        public string nombreSexo { get; set; }
+    }
+}
+```
+
+Dentro del controlador creamos la lista del tipo `PersonaClass`:
+
+```c#
+using System;
+using Microsoft.AspNetCore.Mvc;
+using Section02.Classes;
+
+namespace Section02.Controllers
+{
+    public class PersonaController : Controller
+    {
+        public IActionResult Index()
+        {
+            List<PersonaClass> personasList = new List<PersonaClass>();
+
+            return View();
+        }
+    }
+}
+```
+
+Lo interesante en esta lección es la aplicación de un JOIN con el fin de consultar información en otra tabla a partir de un resultado originado por x tabla. Usando .NET tendremos la siguiente sentencia:
+
+```c#
+using System;
+using Microsoft.AspNetCore.Mvc;
+using Section02.Classes;
+using Section02.Models;
+
+namespace Section02.Controllers
+{
+    public class PersonaController : Controller
+    {
+        public IActionResult Index()
+        {
+            List<PersonaClass> personasList = new List<PersonaClass>();
+
+            using (BDHospitalContext db = new BDHospitalContext())
+            {
+                personasList = (
+                    from persona in db.Personas
+                    join sexo in db.Sexos
+                    on persona.Iidsexo equals sexo.Iidsexo
+                    where persona.Bhabilitado == 1
+                    select new PersonaClass
+                    {
+                        iidPersona = persona.Iidpersona,
+                        nombreCompleto = $"{persona.Nombre} {persona.Appaterno} {persona.Apmaterno}",
+                        email = persona.Email,
+                        nombreSexo = sexo.Nombre
+                    }
+                ).ToList();
+            }
+
+            return View(personasList);
+        }
+    }
+}
+```
+
+Lo siguiente es crear la vista para el controlador, pero en la siguiente sección vamos a renderizar los datos, por el momento solo creamos la vista y la enlazamos en el navbar del archivo `Views/Shared/_Layout.cshtml`:
+
+```cshtml
+...
+<ul class="navbar-nav flex-grow-1">
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Persona" asp-action="Index">Personas</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Especialidad" asp-action="Index">Especialidades</a>
+    </li>
+</ul>
+...
+```
