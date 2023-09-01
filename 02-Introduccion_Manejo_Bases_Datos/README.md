@@ -371,3 +371,48 @@ Dentro de la vista que creamos para el controlador de personas vamos a realizar 
     </tbody>
 </table>
 ```
+
+## Tag Display en Entity Framework
+
+En estos momentos estamos creando las tablas y poniendo manualmente el nombre de cada columna, Entity Framework nos permite realizar esta labor de una manera más sencilla usando un tag sobre las propiedades de la clase que usamos para tipar los listados, por ejemplo con la clase de personas:
+
+```c#
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace Section02.Classes
+{
+    public class PersonaClass
+    {
+        [Display(Name = "Id Persona")]
+        public int iidPersona { get; set; }
+
+        [Display(Name = "Nombre Completo")]
+        public string nombreCompleto { get; set; }
+
+        [Display(Name = "Email")]
+        public string email { get; set; }
+
+        [Display(Name = "Sexo")]
+        public string nombreSexo { get; set; }
+    }
+}
+```
+
+Luego, en la vista debemos realizar el siguiente llamado:
+
+```cshtml
+@using Section02.Classes;
+...
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.iidPersona)</th>
+            <th>@Html.DisplayNameFor(model => model.nombreCompleto)</th>
+            <th>@Html.DisplayNameFor(model => model.email)</th>
+            <th>@Html.DisplayNameFor(model => model.nombreSexo)</th>
+        </tr>
+    </thead>
+    ...
+</table>
+```
