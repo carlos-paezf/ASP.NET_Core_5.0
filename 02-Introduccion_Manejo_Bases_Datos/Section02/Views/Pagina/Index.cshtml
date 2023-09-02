@@ -1,0 +1,32 @@
+@using Section02.Classes;
+@model IEnumerable<PaginaClass>
+
+@{
+    ViewData["Title"] = "Pagina";
+}
+
+<h1>Lisado de Páginas</h1>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.iidPagina)</th>
+            <th>@Html.DisplayNameFor(model => model.mensaje)</th>
+            <th>@Html.DisplayNameFor(model => model.accion)</th>
+            <th>@Html.DisplayNameFor(model => model.controlador)</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (PaginaClass item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => item.iidPagina)</td>
+                <td>@Html.DisplayFor(model => item.mensaje)</td>
+                <td>@Html.DisplayFor(model => item.accion)</td>
+                <td>@Html.DisplayFor(model => item.controlador)</td>
+            </tr>
+        }
+    </tbody>
+</table>

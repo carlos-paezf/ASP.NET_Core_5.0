@@ -518,3 +518,225 @@ La vista `Views/Sede/Index.cshtml` la vamos a generar un Visual Studio Code 2022
     </tbody>
 </table>
 ```
+
+## Tarea: Listado de `pagina` y `medicamento`
+
+### Preguntas de esta tarea
+
+1. Listar la tabla `pagina` con las propiedades `iidpagina`, `mensaje`, `accion` y `controller`
+2. Listar la tabla `medicamento` con las propiedades `iidmedicamento`, `nombre`, `precio`, `stock`, `nombreFormaFarmaceutica`.
+3. En ambos casos `bhabilitado` debe ser `1`
+
+### Solución
+
+#### Clases
+
+`PaginaClass`:
+
+```c#
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace Section02.Classes
+{
+    public class PaginaClass
+    {
+        [Display(Name = "Id Página")]
+        public int iidPagina { get; set; }
+
+        [Display(Name = "Mensaje")]
+        public string mensaje { get; set; }
+
+        [Display(Name = "Acción")]
+        public string accion { get; set; }
+
+        [Display(Name = "Controlador")]
+        public string controlador { get; set; }
+    }
+}
+```
+
+`MedicamentoClass`:
+
+```c#
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace Section02.Classes
+{
+    public class MedicamentoClass
+    {
+        [Display(Name = "Id Medicamento")]
+        public int iidMedicamento { get; set; }
+
+        [Display(Name = "Nombre")]
+        public string nombre { get; set; }
+
+        [Display(Name = "Precio")]
+        public decimal? precio { get; set; }
+
+        [Display(Name = "Stock")]
+        public int? stock { get; set; }
+
+        [Display(Name = "Nombre Forma Farmacéutica")]
+        public string nombreFormaFarmaceutica { get; set; }
+    }
+}
+```
+
+#### Controllers
+
+`PaginaController`:
+
+```c#
+using System;
+using Microsoft.AspNetCore.Mvc;
+using Section02.Classes;
+using Section02.Models;
+
+namespace Section02.Controllers
+{
+    public class PaginaController : Controller
+    {
+        public IActionResult Index()
+        {
+            List<PaginaClass> paginasList = new List<PaginaClass>();
+
+            using (BDHospitalContext db = new BDHospitalContext())
+            {
+                paginasList = (
+                    from pagina in db.Paginas
+                    where pagina.Bhabilitado == 1
+                    select new PaginaClass
+                    {
+                        iidPagina = pagina.Iidpagina,
+                        mensaje = pagina.Mensaje,
+                        accion = pagina.Accion,
+                        controlador = pagina.Controlador
+                    }
+                ).ToList();
+            }
+
+            return View(paginasList);
+        }
+    }
+}
+```
+
+`MedicamentoController`:
+
+```c#
+using System;
+using Microsoft.AspNetCore.Mvc;
+using Section02.Classes;
+using Section02.Models;
+
+namespace Section02.Controllers
+{
+    public class MedicamentoController : Controller
+    {
+        public IActionResult Index()
+        {
+            List<MedicamentoClass> medicamentosList = new List<MedicamentoClass>();
+
+            using (BDHospitalContext db = new BDHospitalContext())
+            {
+                medicamentosList = (
+                    from medicamento in db.Medicamentos
+                    join formaFarmaceutica in db.FormaFarmaceuticas
+                    on medicamento.Iidformafarmaceutica equals formaFarmaceutica.Iidformafarmaceutica
+                    where medicamento.Bhabilitado == 1
+                    select new MedicamentoClass
+                    {
+                        iidMedicamento = medicamento.Iidmedicamento,
+                        nombre = medicamento.Nombre,
+                        precio = medicamento.Precio,
+                        stock = medicamento.Stock,
+                        nombreFormaFarmaceutica = formaFarmaceutica.Nombre
+                    }
+                ).ToList();
+            }
+
+            return View(medicamentosList);
+        }
+    }
+}
+```
+
+#### Vistas
+
+`Pagina/Index.cshtml`:
+
+```cshtml
+@using Section02.Classes;
+@model IEnumerable<PaginaClass>
+
+@{
+    ViewData["Title"] = "Pagina";
+}
+
+<h1>Lisado de Páginas</h1>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.iidPagina)</th>
+            <th>@Html.DisplayNameFor(model => model.mensaje)</th>
+            <th>@Html.DisplayNameFor(model => model.accion)</th>
+            <th>@Html.DisplayNameFor(model => model.controlador)</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (PaginaClass item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => item.iidPagina)</td>
+                <td>@Html.DisplayFor(model => item.mensaje)</td>
+                <td>@Html.DisplayFor(model => item.accion)</td>
+                <td>@Html.DisplayFor(model => item.controlador)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+```
+
+`Medicamento/Index.cshtml`:
+
+```cshtml
+@using Section02.Classes;
+@model IEnumerable<MedicamentoClass>
+
+@{
+    ViewData["Title"] = "Medicamentos";
+}
+
+<h1>Lisado de Medicamentos</h1>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.iidMedicamento)</th>
+            <th>@Html.DisplayNameFor(model => model.nombre)</th>
+            <th>@Html.DisplayNameFor(model => model.precio)</th>
+            <th>@Html.DisplayNameFor(model => model.stock)</th>
+            <th>@Html.DisplayNameFor(model => model.nombreFormaFarmaceutica)</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (MedicamentoClass item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => item.iidMedicamento)</td>
+                <td>@Html.DisplayFor(model => item.nombre)</td>
+                <td>@Html.DisplayFor(model => item.precio)</td>
+                <td>@Html.DisplayFor(model => item.stock)</td>
+                <td>@Html.DisplayFor(model => item.nombreFormaFarmaceutica)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+```

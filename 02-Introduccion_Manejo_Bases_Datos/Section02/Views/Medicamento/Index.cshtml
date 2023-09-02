@@ -1,0 +1,34 @@
+@using Section02.Classes;
+@model IEnumerable<MedicamentoClass>
+
+@{
+    ViewData["Title"] = "Medicamentos";
+}
+
+<h1>Lisado de Medicamentos</h1>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.iidMedicamento)</th>
+            <th>@Html.DisplayNameFor(model => model.nombre)</th>
+            <th>@Html.DisplayNameFor(model => model.precio)</th>
+            <th>@Html.DisplayNameFor(model => model.stock)</th>
+            <th>@Html.DisplayNameFor(model => model.nombreFormaFarmaceutica)</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (MedicamentoClass item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => item.iidMedicamento)</td>
+                <td>@Html.DisplayFor(model => item.nombre)</td>
+                <td>@Html.DisplayFor(model => item.precio)</td>
+                <td>@Html.DisplayFor(model => item.stock)</td>
+                <td>@Html.DisplayFor(model => item.nombreFormaFarmaceutica)</td>
+            </tr>
+        }
+    </tbody>
+</table>
