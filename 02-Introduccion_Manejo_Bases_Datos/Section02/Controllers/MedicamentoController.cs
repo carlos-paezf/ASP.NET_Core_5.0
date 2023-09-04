@@ -11,6 +11,8 @@ namespace Section02.Controllers
         {
             List<MedicamentoClass> medicamentosList = new List<MedicamentoClass>();
 
+            ViewBag.Title = "Lista de medicamentos";
+
             using (BDHospitalContext db = new BDHospitalContext())
             {
                 medicamentosList = (

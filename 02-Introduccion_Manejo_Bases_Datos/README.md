@@ -740,3 +740,34 @@ namespace Section02.Controllers
     </tbody>
 </table>
 ```
+
+## ViewBag
+
+Otra manera de pasar la información desde el controlador a la vista es usando `ViewBag`, dentro de la cuál enviamos las variables que necesitamos, por ejemplo: Queremos pasar el titulo de la vista medicamentos, en el controlador podemos hacer lo siguiente:
+
+```c#
+...
+namespace Section02.Controllers
+{
+    public class MedicamentoController : Controller
+    {
+        public IActionResult Index()
+        {
+            ...
+            ViewBag.Title = "Lista de medicamentos";
+            ...
+        }
+    }
+}
+```
+
+Luego en la vista debemos crear una variable que reciba este valor y lo muestre:
+
+```cshtml
+@{
+    string title = ViewBag.Title;
+    ViewData["Title"] = title;
+}
+
+<h1>@title</h1>
+```
