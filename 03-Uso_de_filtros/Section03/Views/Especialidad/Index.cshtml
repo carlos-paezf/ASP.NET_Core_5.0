@@ -1,0 +1,39 @@
+@using Section03.Classes;
+@model IEnumerable<EspecialidadClass>;
+
+@{
+    ViewData["Title"] = "Especialidad";
+}
+
+
+<h1>Especialidades</h1>
+
+
+<form method="POST" aps-controller="Especialidad" asp-action="Index" class="my-3"
+    style="display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 1rem;">
+    <label for="name">Ingrese nombre de la especialid</label>
+    <input type="text" name="Nombre" id="name" class="form form-control">
+    <button type="submit" class="btn btn-info">Enviar</button>
+</form>
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Iidespecialidad)</th>
+            <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+            <th>@Html.DisplayNameFor(model => model.Descripcion)</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (EspecialidadClass item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => item.Iidespecialidad)</td>
+                <td>@Html.DisplayFor(model => item.Nombre)</td>
+                <td>@Html.DisplayFor(model => item.Descripcion)</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Section03.Models;
 
-public partial class BdhospitalContext : DbContext
+public partial class BDHospitalContext : DbContext
 {
-    public BdhospitalContext()
+    public BDHospitalContext()
     {
     }
 
-    public BdhospitalContext(DbContextOptions<BdhospitalContext> options)
+    public BDHospitalContext(DbContextOptions<BDHospitalContext> options)
         : base(options)
     {
     }
