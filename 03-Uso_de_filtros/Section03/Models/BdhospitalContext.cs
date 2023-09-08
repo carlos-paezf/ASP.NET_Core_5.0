@@ -54,7 +54,7 @@ public partial class BDHospitalContext : DbContext
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source=localhost, 1433;Initial Catalog=BDHospital;Integrated Security=True;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=LAPTOP-FERRER\\SQLEXPRESS;Initial Catalog=BDHospital;Persist Security Info=True;User ID=SA;Password=P@ssw0rd;Integrated Security=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
