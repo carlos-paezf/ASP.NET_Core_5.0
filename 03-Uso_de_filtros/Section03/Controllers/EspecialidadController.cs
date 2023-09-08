@@ -24,6 +24,8 @@ namespace Section03.Controllers
                             Descripcion = especialidad.Descripcion
                         }
                     ).ToList();
+
+                    ViewBag.NombreEspecialidad = "";
                 }
                 else
                 {
@@ -37,6 +39,8 @@ namespace Section03.Controllers
                             Descripcion = especialidad.Descripcion
                         }
                     ).ToList();
+
+                    ViewBag.NombreEspecialidad = objEspecialidad.Nombre;
                 }
             }
 

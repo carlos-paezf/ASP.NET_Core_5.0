@@ -3,17 +3,19 @@
 
 @{
     ViewData["Title"] = "Especialidad";
+    string nombreEspecialidad = ViewBag.NombreEspecialidad;
 }
 
 
 <h1>Especialidades</h1>
 
 
-<form method="POST" aps-controller="Especialidad" asp-action="Index" class="my-3"
-    style="display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 1rem;">
+<form id="form" method="POST" aps-controller="Especialidad" asp-action="Index" class="my-3"
+    style="display: grid; grid-template-columns: 1fr 2fr 1fr 1fr; gap: 1rem;">
     <label for="name">Ingrese nombre de la especialid</label>
-    <input type="text" name="Nombre" id="name" class="form form-control">
-    <button type="submit" class="btn btn-info">Enviar</button>
+    <input type="text" name="Nombre" id="name" value="@nombreEspecialidad" class="form form-control">
+    <button type="submit" class="btn btn-success">Buscar</button>
+    <button type="button" class="btn btn-info" onclick="clean()">Limpiar</button>
 </form>
 
 
@@ -37,3 +39,11 @@
         }
     </tbody>
 </table>
+
+
+<script>
+    function clean () {
+        document.getElementById("name").value = "";
+        document.getElementById("form").submit()
+    }
+</script>

@@ -1,5 +1,7 @@
 # Sección 03: Uso de filtros
 
+## Primeros pasos
+
 Para esta sección vamos a crear un nuevo proyecto, pero nos conectaremos a la misma base de datos de la sección anterior. Con esto en mente, usaremos el siguiente comando de dotnet CLI para la creación del proyecto:
 
 ```txt
@@ -19,7 +21,7 @@ $: dotnet add package Microsoft.EntityFrameworkCore.Design
 Hacemos el mapeo con la base de datos usando el siguiente comando:
 
 ```txt
-$: dotnet ef dbcontext scaffold "Data Source=localhost, 1433;Initial Catalog=BDHospital;Integrated Security=True;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -o Models
+$: dotnet ef dbcontext scaffold "Data Source=LAPTOP-FERRER\SQLEXPRESS;Initial Catalog=BDHospital;Persist Security Info=True;User ID=SA;Password=P@ssw0rd;Integrated Security=True;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -o Models
 ```
 
 ## Filtrado por nombre de especialidad
@@ -83,4 +85,82 @@ namespace Section03.Controllers
         }
     }
 }
+```
+
+## Botón de limpiar formulario
+
+Vamos a añadir una funcionalidad que nos permita limpiar el término de búsqueda y de tal manera tener de nuevo todo el listado de los datos. Dentro del controlador `EspecialidadController.cs` hacemos uso de un `ViewBag`, con el objetivo de tener un tipo de historial de lo que escribió el usuario y poderlo mostrar en el input:
+
+```c#
+...
+namespace Section03.Controllers
+{
+    public class EspecialidadController : Controller
+    {
+        public IActionResult Index(EspecialidadClass objEspecialidad)
+        {
+            ...
+            using (BDHospitalContext db = new BDHospitalContext())
+            {
+                if (objEspecialidad.Nombre == null || objEspecialidad.Nombre == "")
+                {
+                    ...
+                    ViewBag.NombreEspecialidad = "";
+                }
+                else
+                {
+                    ...
+                    ViewBag.NombreEspecialidad = objEspecialidad.Nombre;
+                }
+            }
+            ...
+        }
+    }
+}
+```
+
+En la vista vamos a usar el siguiente código:
+
+```cshtml
+...
+@{
+    ...
+    string nombreEspecialidad = ViewBag.NombreEspecialidad;
+}
+...
+<form ...>
+    ...
+    <input ... value="@nombreEspecialidad">
+    ...
+</form>
+...
+```
+
+Para el botón de limpiar vamos a añadir el siguiente fragmento en la vista:
+
+```cshtml
+...
+<form style="display: grid; grid-template-columns: 1fr 2fr 1fr 1fr; gap: 1rem;" ...>
+    ...
+    <button type="button" class="btn btn-info" onclick="clean()">Limpiar</button>
+</form>
+...
+```
+
+La función que se menciona en el botón la definimos como script dentro de la propia vista, recordando la importancia de tener marcado con ids los elementos con los que vamos a interactuar:
+
+```cshtml
+...S
+<form id="form" ...>
+    ...
+    <input ... id="name">
+    ...
+</form>
+...
+<script>
+    function clean () {
+        document.getElementById("name").value = "";
+        document.getElementById("form").submit()
+    }
+</script>
 ```
