@@ -1,0 +1,60 @@
+@using Section03.Classes;
+@model IEnumerable<PersonaClass>
+
+@{
+    ViewData["Title"] = "Listado de Personas";
+    List<SelectListItem> sexList = ViewBag.SexList;
+}
+
+
+<h1>Personas</h1>
+
+
+@* <form id="form" method="POST" aps-controller="Especialidad" asp-action="Index" class="my-3"
+    style="display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 1rem;">
+    <label for="name">Ingrese nombre de la especialid</label>
+    <input type="text" name="Nombre" id="name" value="@nombreEspecialidad" class="form form-control" onkeyup="search()">
+    <button type="button" class="btn btn-info" onclick="clean()">Limpiar</button>
+</form> *@
+
+<form id="form" class="my-3"
+    style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem;">
+    <label for="name">Seleccione el sexo:</label>
+    @Html.DropDownList("IidSexo", sexList, new { @class="form form-control" })
+</form>
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.IidPersona)</th>
+            <th>@Html.DisplayNameFor(model => model.NombreCompleto)</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.NombreSexo)</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (PersonaClass item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => item.IidPersona)</td>
+                <td>@Html.DisplayFor(model => item.NombreCompleto)</td>
+                <td>@Html.DisplayFor(model => item.Email)</td>
+                <td>@Html.DisplayFor(model => item.NombreSexo)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+    function clean () {
+        document.getElementById("name").value = "";
+        document.getElementById("form").submit()
+    }
+
+    function search() {
+        document.getElementById("form").submit()
+    }
+</script>

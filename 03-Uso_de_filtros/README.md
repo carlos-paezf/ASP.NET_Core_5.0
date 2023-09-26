@@ -193,3 +193,191 @@ Luego, en el script creamos la función para el envío del formulario y de tal m
     }
 </script>
 ```
+
+## Datos de ComboBox desde la DB
+
+Para esta ocasión vamos a usar la tabla `Personas`, por lo que vamos a crear la clase que nos ayuda a definir un objeto de dicha tabla:
+
+```c#
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace Section03.Classes
+{
+    public class PersonaClass
+    {
+        [Display(Name = "Id Persona")]
+        public int IidPersona { get; set; }
+
+        [Display(Name = "Nombre Completo")]
+        public string NombreCompleto { get; set; }
+
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "Sexo")]
+        public string NombreSexo { get; set; }
+
+        [Display(Name = "Id Sexo")]
+        public int Iidsexo { get; set; }
+    }
+}
+```
+
+También creamos el controlador para personas, con un método de listado con consulta JOIN que pronto alteraremos:
+
+```c#
+using Microsoft.AspNetCore.Mvc;
+using Section03.Classes;
+using Section03.Models;
+
+namespace Section03.Controllers
+{
+    public class PersonaController : Controller
+    {
+        public IActionResult Index()
+        {
+            List<PersonaClass> personaList = new List<PersonaClass>();
+
+            using (BDHospitalContext db = new BDHospitalContext())
+            {
+                personaList = (
+                    from persona in db.Personas
+                    join sexo in db.Sexos
+                    on persona.Iidsexo equals sexo.Iidsexo
+                    where persona.Bhabilitado == 1
+                    select new PersonaClass
+                    {
+                        IidPersona = persona.Iidpersona,
+                        NombreCompleto = $"{persona.Nombre} {persona.Appaterno} {persona.Apmaterno}",
+                        Email = persona.Email,
+                        NombreSexo = sexo.Nombre
+                    }
+                ).ToList();
+            }
+
+            return View(personaList);
+        }
+
+    }
+}
+```
+
+En el controlador vamos a crear un método para llenar el combo box de sexo, o lo que en este caso será una instancia de la clase `SelectListItem`, con los valores que se registran en la base de datos. Posteriormente lo llamamos en la acción `Index`:
+
+```c#
+...
+using Microsoft.AspNetCore.Mvc.Rendering;
+...
+namespace Section03.Controllers
+{
+    public class PersonaController : Controller
+    {
+        public void FillSexComboBox()
+        {
+            List<SelectListItem> sexList = new List<SelectListItem>();
+
+            using (BDHospitalContext db = new BDHospitalContext())
+            {
+                sexList = (
+                    from sexo in db.Sexos
+                    where sexo.Bhabilitado == 1
+                    select new SelectListItem
+                    {
+                        Text = sexo.Nombre,
+                        Value = sexo.Iidsexo.ToString()
+                    }
+                ).ToList();
+            }
+
+            ViewBag.SexList = sexList;
+        }
+        
+        public IActionResult Index()
+        {
+            ...
+            FillSexComboBox();
+            ...
+        }
+
+    }
+}
+```
+
+En la vista recibimos el valor de `ViewBag.SexList` y lo asignamos a una variable, además de crear una tabla para listar los resultados de las personas junto a un formulario:
+
+```cshtml
+@using Section03.Classes;
+@model IEnumerable<PersonaClass>
+
+@{
+    ViewData["Title"] = "Listado de Personas";
+    List<SelectListItem> sexList = ViewBag.SexList;
+}
+
+
+<h1>Personas</h1>
+
+
+<form id="form" class="my-3"
+    style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem;">
+    <label for="name">Seleccione el sexo:</label>
+    @Html.DropDownList("IidSexo", sexList, new { @class="form form-control" })
+</form>
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.IidPersona)</th>
+            <th>@Html.DisplayNameFor(model => model.NombreCompleto)</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.NombreSexo)</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (PersonaClass item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => item.IidPersona)</td>
+                <td>@Html.DisplayFor(model => item.NombreCompleto)</td>
+                <td>@Html.DisplayFor(model => item.Email)</td>
+                <td>@Html.DisplayFor(model => item.NombreSexo)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+```
+
+Queremos añadir una opción por defecto al selector, con el objetivo de que aparezca antes que las opciones de la base de datos, es decir aparezca en la posición `0` del arreglo de items, para lo cual modificamos el método del controlador de la siguiente manera:
+
+```c#
+...
+namespace Section03.Controllers
+{
+    public class PersonaController : Controller
+    {
+        public void FillSexComboBox()
+        {
+            ...
+            using (BDHospitalContext db = new BDHospitalContext())
+            {
+                ...
+                sexList.Insert(
+                    0,
+                    new SelectListItem
+                    {
+                        Text = "--Seleccione--",
+                        Value = ""
+                    }
+                );
+            }
+            ...
+        }
+        ...
+    }
+}
+```
+
+En la próxima lección veremos la manera para que el valor de la selección en el combo box, afecte el resultado de la consulta en la acción del controlador.
