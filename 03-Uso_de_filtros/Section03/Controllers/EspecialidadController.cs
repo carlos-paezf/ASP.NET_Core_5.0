@@ -31,7 +31,8 @@ namespace Section03.Controllers
                 {
                     especialidadList = (
                         from especialidad in db.Especialidades
-                        where especialidad.Bhabilitado == 1 && especialidad.Nombre.Contains(objEspecialidad.Nombre)
+                        where especialidad.Bhabilitado == 1
+                            && especialidad.Nombre.Contains(objEspecialidad.Nombre)
                         select new EspecialidadClass
                         {
                             Iidespecialidad = especialidad.Iidespecialidad,

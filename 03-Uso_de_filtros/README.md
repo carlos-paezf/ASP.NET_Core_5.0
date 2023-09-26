@@ -150,7 +150,7 @@ Para el botón de limpiar vamos a añadir el siguiente fragmento en la vista:
 La función que se menciona en el botón la definimos como script dentro de la propia vista, recordando la importancia de tener marcado con ids los elementos con los que vamos a interactuar:
 
 ```cshtml
-...S
+...
 <form id="form" ...>
     ...
     <input ... id="name">
@@ -160,6 +160,35 @@ La función que se menciona en el botón la definimos como script dentro de la p
 <script>
     function clean () {
         document.getElementById("name").value = "";
+        document.getElementById("form").submit()
+    }
+</script>
+```
+
+## Filtro sensitivo por TextBox
+
+En esta lección vamos a modificar el formulario con el objetivo de que no tengamos que usar botones, sino que en cada ocasión que modificamos la entrada se realice la búsqueda a la base de datos.
+
+Lo primero que haremos será modificar la vista de la siguiente manera:
+
+```cshtml
+...
+<form id="form" method="POST" aps-controller="Especialidad" asp-action="Index" class="my-3"
+    style="display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 1rem;">
+    <label for="name">Ingrese nombre de la especialid</label>
+    <input type="text" name="Nombre" id="name" value="@nombreEspecialidad" class="form form-control" onkeyup="search()">
+    <button type="button" class="btn btn-info" onclick="clean()">Limpiar</button>
+</form>
+...
+```
+
+Luego, en el script creamos la función para el envío del formulario y de tal manera hacer uso de la acción definida en el controlador:
+
+```cshtml
+...
+<script>
+    ...
+    function search() {
         document.getElementById("form").submit()
     }
 </script>
