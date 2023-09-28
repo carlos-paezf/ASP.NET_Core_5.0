@@ -381,3 +381,71 @@ namespace Section03.Controllers
 ```
 
 En la próxima lección veremos la manera para que el valor de la selección en el combo box, afecte el resultado de la consulta en la acción del controlador.
+
+## Filtrar resultados por selección de ComboBox
+
+En esta sección vamos a intentar que el filtro de sexo afecte los resultados de las personas listadas. Dentro del controlador vamos a modificar la acción `Index`, para que si la selección sea la opción por defecto o 0, nos traiga todos los resultados, pero si hay una selección especifica pueda filtrar los valores:
+
+```c#
+...
+namespace Section03.Controllers
+{
+    public class PersonaController : Controller
+    {
+        ...
+        public IActionResult Index(PersonaClass objPersona)
+        {
+            ...
+            using (BDHospitalContext db = new BDHospitalContext())
+            {
+                if (objPersona.Iidsexo == 0)
+                {
+                    ...
+                }
+                else
+                {
+                    personaList = (
+                        from persona in db.Personas
+                        join sexo in db.Sexos
+                        on persona.Iidsexo equals sexo.Iidsexo
+                        where persona.Bhabilitado == 1
+                        && persona.Iidsexo == objPersona.Iidsexo
+                        select new PersonaClass
+                        {
+                            IidPersona = persona.Iidpersona,
+                            NombreCompleto = $"{persona.Nombre} {persona.Appaterno} {persona.Apmaterno}",
+                            Email = persona.Email,
+                            NombreSexo = sexo.Nombre
+                        }
+                    ).ToList();
+                }
+            }
+
+            return View(personaList);
+        }
+    }
+}
+```
+
+Por último, dentro la vista debemos aplicar la siguiente modificación:
+
+```cshtml
+...
+<form id="form" class="my-3" method="POST" aps-controller="Especialidad" asp-action="Index" class="my-3"
+    style="display: grid; grid-template-columns: 1fr 2fr 1fr 1fr; gap: 1rem;">
+    ...
+    <button type="button" class="btn btn-success" onclick="submit()">Enviar</button>
+    <button type="button" class="btn btn-info" onclick="clean()">Limpiar</button>
+</form>
+...
+<script>
+    function clean () {
+        document.getElementById("IidSexo").value = 0;
+        document.getElementById("form").submit()
+    }
+
+    function search() {
+        document.getElementById("form").submit()
+    }
+</script>
+```

@@ -36,7 +36,7 @@ namespace Section03.Controllers
             ViewBag.SexList = sexList;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(PersonaClass objPersona)
         {
             List<PersonaClass> personaList = new List<PersonaClass>();
 
@@ -44,19 +44,39 @@ namespace Section03.Controllers
 
             using (BDHospitalContext db = new BDHospitalContext())
             {
-                personaList = (
-                    from persona in db.Personas
-                    join sexo in db.Sexos
-                    on persona.Iidsexo equals sexo.Iidsexo
-                    where persona.Bhabilitado == 1
-                    select new PersonaClass
-                    {
-                        IidPersona = persona.Iidpersona,
-                        NombreCompleto = $"{persona.Nombre} {persona.Appaterno} {persona.Apmaterno}",
-                        Email = persona.Email,
-                        NombreSexo = sexo.Nombre
-                    }
-                ).ToList();
+                if (objPersona.Iidsexo == 0)
+                {
+                    personaList = (
+                        from persona in db.Personas
+                        join sexo in db.Sexos
+                        on persona.Iidsexo equals sexo.Iidsexo
+                        where persona.Bhabilitado == 1
+                        select new PersonaClass
+                        {
+                            IidPersona = persona.Iidpersona,
+                            NombreCompleto = $"{persona.Nombre} {persona.Appaterno} {persona.Apmaterno}",
+                            Email = persona.Email,
+                            NombreSexo = sexo.Nombre
+                        }
+                    ).ToList();
+                }
+                else
+                {
+                    personaList = (
+                        from persona in db.Personas
+                        join sexo in db.Sexos
+                        on persona.Iidsexo equals sexo.Iidsexo
+                        where persona.Bhabilitado == 1
+                        && persona.Iidsexo == objPersona.Iidsexo
+                        select new PersonaClass
+                        {
+                            IidPersona = persona.Iidpersona,
+                            NombreCompleto = $"{persona.Nombre} {persona.Appaterno} {persona.Apmaterno}",
+                            Email = persona.Email,
+                            NombreSexo = sexo.Nombre
+                        }
+                    ).ToList();
+                }
             }
 
             return View(personaList);

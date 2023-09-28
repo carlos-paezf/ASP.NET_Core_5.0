@@ -10,17 +10,12 @@
 <h1>Personas</h1>
 
 
-@* <form id="form" method="POST" aps-controller="Especialidad" asp-action="Index" class="my-3"
-    style="display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 1rem;">
-    <label for="name">Ingrese nombre de la especialid</label>
-    <input type="text" name="Nombre" id="name" value="@nombreEspecialidad" class="form form-control" onkeyup="search()">
-    <button type="button" class="btn btn-info" onclick="clean()">Limpiar</button>
-</form> *@
-
-<form id="form" class="my-3"
-    style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem;">
+<form id="form" class="my-3" method="POST" aps-controller="Especialidad" asp-action="Index" class="my-3"
+    style="display: grid; grid-template-columns: 1fr 2fr 1fr 1fr; gap: 1rem;">
     <label for="name">Seleccione el sexo:</label>
     @Html.DropDownList("IidSexo", sexList, new { @class="form form-control" })
+    <button type="button" class="btn btn-success" onclick="submit()">Enviar</button>
+    <button type="button" class="btn btn-info" onclick="clean()">Limpiar</button>
 </form>
 
 
@@ -50,7 +45,7 @@
 
 <script>
     function clean () {
-        document.getElementById("name").value = "";
+        document.getElementById("IidSexo").value = 0;
         document.getElementById("form").submit()
     }
 
